@@ -1,7 +1,7 @@
 ﻿var dtble;
 $(document).ready(function () {
     loaddate();
-    alert("son")
+    alert("son 7")
 });
 
 
@@ -16,7 +16,16 @@ function loaddate() {
             { "data": "name", "title": "Name" },
             { "data": "description", "title": "Description" },
             { "data": "price", "title": "Price" },
-            { "data": "category", "title": "Category" }
+            { "data": "category.name", "title": "Category" },
+            {
+                "data": "id",
+                "render": function (data) {
+                    return `
+                        <a href="/Admin/Product/Edit/${data}" class="btn btn-success">Edit</a>
+                        <a href="/Admin/Product/Delete/${data}" class="btn btn-danger">Delete</a>
+                    `;
+                }
+            }
         ]
     });
 }

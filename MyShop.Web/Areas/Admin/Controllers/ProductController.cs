@@ -29,7 +29,7 @@ namespace MyShop.Web.Areas.Admin.Controllers
         [HttpGet]
         public IActionResult GetData()
         {
-            var prodects = _unitOfWork.Product.GetAll();
+            var prodects = _unitOfWork.Product.GetAll(IncludeWord:"Category");
             return Json(new {data = prodects });
         }
         [HttpGet]
