@@ -27,6 +27,12 @@ namespace MyShop.Web.Areas.Admin.Controllers
             return View();
         }
         [HttpGet]
+        public IActionResult GetData()
+        {
+            var prodects = _unitOfWork.Product.GetAll();
+            return Json(new {data = prodects });
+        }
+        [HttpGet]
         public IActionResult Create()
         {
             ProductVM productVM = new ProductVM()

@@ -12,8 +12,7 @@
   <!-- Theme style -->
   <link rel="stylesheet" href="/css/adminlte.min.css">
     <link href="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css" rel="stylesheet" />
-    <link href="//cdn.datatables.net/2.1.0/css/dataTables.dataTables.min.css" rel="stylesheet" />
-    <link href="//cdn.datatables.net/1.13.4/css/jquery.dataTables.dataTables.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdn.datatables.net/2.1.4/css/dataTables.dataTables.css" />
 </head>
 <body class="hold-transition sidebar-mini">
 <!-- Site wrapper -->
@@ -301,9 +300,8 @@
 <script src="/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
 <!-- AdminLTE App -->
 <script src="/js/adminlte.min.js"></script>
-    <script src="//cdn.datatables.net/2.1.0/js/dataTables.min.js"></script>
-    <script src="//cdn.datatables.net/1.13.4/js/jquerydataTables.min.js"></script>
-@await RenderSectionAsync("Scripts", required: false)
+    <script src="https://cdn.datatables.net/2.1.4/js/dataTables.js"></script>
+    @await RenderSectionAsync("Scripts", required: false)
 
 </body>
 </html>
