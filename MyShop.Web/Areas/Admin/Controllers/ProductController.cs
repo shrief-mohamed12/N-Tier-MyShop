@@ -81,24 +81,53 @@ namespace MyShop.Web.Areas.Admin.Controllers
             {
                 return NotFound();
             }
-            var item = _unitOfWork.Product.GetFirstOrDefaults(x => x.Id == Id);
-            return View(item);
+            ProductVM productVM = new ProductVM()
+            {
+                Product = _unitOfWork.Product.GetFirstOrDefaults(x => x.Id == Id),
+                CategoryList = _unitOfWork.Category.GetAll().Select(x => new SelectListItem
+                {
+                    Text = x.Name,
+                    Value = x.Id.ToString()
+                })
+            };
+            return View(productVM);
         }
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Edit(Product Product)
+        public IActionResult Edit(ProductVM Productvm, IFormFile file)
         {
             if (ModelState.IsValid)
             {
-                _unitOfWork.Product.Update(Product);
+                string RootPath = _webHostEnvironment.WebRootPath;
+                if (file != null)
+                {
+                    string filename = Guid.NewGuid().ToString();
+                    var Upload = Path.Combine(RootPath, @"Images\Product");
+                    var ext = Path.GetExtension(file.FileName);
+                    if(Productvm.Product.Img != null)
+                    {
+                        var oldImg = Path.Combine(RootPath,Productvm.Product.Img.TrimStart('\\'));
+                        if (System.IO.File.Exists(oldImg))
+                        {
+                            System.IO.File.Delete(oldImg);
+                        }
+                    }
+                    using (var fileStream = new FileStream(Path.Combine(Upload, filename + ext), FileMode.Create))
+                    {
+                        file.CopyTo(fileStream);
+                    }
+                    Productvm.Product.Img = @"Images\Product\" + filename + ext;
+
+                }
+
+                _unitOfWork.Product.Update(Productvm.Product);
                 _unitOfWork.Complate();
                 TempData["Update"] = "Item has Updated Successefully ";
-
                 return RedirectToAction("Index");
             }
             else
             {
-                return View(Product);
+                return View(Productvm.Product);
             }
         }
         [HttpGet]
