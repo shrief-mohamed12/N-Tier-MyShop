@@ -94,7 +94,7 @@ namespace MyShop.Web.Areas.Admin.Controllers
         }
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Edit(ProductVM Productvm, IFormFile file)
+        public IActionResult Edit(ProductVM Productvm, IFormFile? file)
         {
             if (ModelState.IsValid)
             {
@@ -130,32 +130,24 @@ namespace MyShop.Web.Areas.Admin.Controllers
                 return View(Productvm.Product);
             }
         }
-        [HttpGet]
-        public IActionResult Delete(int? Id)
-        {
-            if (Id == null || Id == 0)
-            {
-                return NotFound();
-            }
-            var item = _unitOfWork.Product.GetFirstOrDefaults(x => x.Id == Id);
-            return View(item);
-        }
-        [HttpPost]
+     
+        [HttpDelete]
         public IActionResult ConfirmDelete(int? Id)
         {
             var item = _unitOfWork.Product.GetFirstOrDefaults(x => x.Id == Id);
             if (item != null)
             {
+                var oldImg = Path.Combine(_webHostEnvironment.WebRootPath, item.Img.TrimStart('\\'));
+                if (System.IO.File.Exists(oldImg))
+                {
+                    System.IO.File.Delete(oldImg);
+                }
                 _unitOfWork.Product.Remove(item);
                 _unitOfWork.Complate();
-                TempData["Delete"] = "Item has Deleted Successefully ";
-                return RedirectToAction("Index");
+                return Json(new { success = true, message = " The item has been deleted " });
             }
-            else
-            {
-                return NotFound();
-            }
-
+          
+              return Json(new { success = false, message = " Error while deleting " });
         }
     }
 }

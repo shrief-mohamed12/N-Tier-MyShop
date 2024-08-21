@@ -27,7 +27,7 @@ namespace Myshop.DataAccess.Implimentation
                 ProductInDb.Description = product.Description;
                 ProductInDb.Img= product.Img;
                 ProductInDb.Price = product.Price;  
-                ProductInDb.Category = product.Category;    
+                ProductInDb.CategoryId = product.CategoryId;                    
             }
         }
     }
